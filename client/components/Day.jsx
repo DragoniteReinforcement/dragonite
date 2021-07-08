@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 const Day = (props) => {
   const [completed, setCompleted] = useState(false);
 
+  const handleClick = (e) => {
+
+  };
+
   return (
     <div className="dayBox">
       <p>
@@ -26,6 +30,7 @@ const Day = (props) => {
           <input
             name="completed"
             type="checkbox"
+            onClick={handleClick}
           />
         </label>
       </form>

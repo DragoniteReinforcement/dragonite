@@ -6,16 +6,28 @@ import atoms from '../atoms';
 
 const EventDisplay = (props) => {
   const [event, setEvent] = useRecoilState(atoms.events);
-
+  const userInfo = useRecoilValue(atoms.userInfo);
+  // get event information for the user
   useEffect(() => {
-    fetch('/api/events')
-      .then((res) => res.json())
-      .then((data) => {
-        setEvent(data[0]);
-      }).catch((err) => {
-        console.log(err);
-      });
+    fetch('/getUserEventInfo', {
+      method: 'GET', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userInfo.username),
+    })
+      .then((response) => response.json())
+      .then((data) => setEvent(data));
   }, []);
+
+  //   fetch('/api/events')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setEvent(data[0]);
+  //     }).catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const convertToDays = (start, end) => {
     const daysBetween = ((end - start) / (60 * 60 * 24 * 1000)) + 1;

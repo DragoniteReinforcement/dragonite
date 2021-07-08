@@ -2,10 +2,22 @@ import { atom } from 'recoil';
 
 const atoms = {};
 
-// URL for iframe display
 atoms.events = atom({
   key: 'events',
   default: {},
+});
+
+atoms.userInfo = atom({
+  key: 'userInfo',
+  default: {
+    username: '',
+    userId: 0,
+  },
+});
+
+atoms.userTasks = atom({
+  key: 'userTasks',
+  default: [],
 });
 
 export default atoms;
