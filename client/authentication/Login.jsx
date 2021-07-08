@@ -9,7 +9,7 @@ const Login = () => {
   const [user, setUser] = useRecoilState(atoms.userInfo);
 
   useEffect(() => {
-    if (loginSuccess) {
+    if (loginSuccess > 0) {
       history.push('/app');
     }
   });
@@ -28,12 +28,12 @@ const Login = () => {
       .then((data) => {
         setLogin(data.id);
         setUser({ username: userData, userId: data.id });
+        // console.log({ userData, data });
       })
       .catch((err) => console.log('login err', err));
   };
 
   return (
-
     <div className="loginForm">
       <form>
         <label>
@@ -44,10 +44,10 @@ const Login = () => {
           Password:
           <input id="loginPassword" type="password" label="Password" />
         </label>
-        <button onClick={handleSubmit}> Log In </button>
+        <button onClick={handleSubmit}>Log In</button>
       </form>
       <Link to="/signup">
-        <button> Sign Up </button>
+        <button>Sign Up</button>
       </Link>
     </div>
   );

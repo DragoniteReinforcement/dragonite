@@ -4,21 +4,27 @@ import CreateEventForm from './CreateEventForm.jsx';
 import JoinEventForm from './JoinEventForm.jsx';
 import atoms from '../atoms';
 
-const EventDisplay = (props) => {
+const EventDisplay = () => {
   const [event, setEvent] = useRecoilState(atoms.events);
   const userInfo = useRecoilValue(atoms.userInfo);
   // get event information for the user
+  // let body = '';
+  // if (userInfo.username !== '') body = JSON.stringify(userInfo.username);
   useEffect(() => {
+    console.log('____________', userInfo.username);
+    console.log('userinfo', userInfo);
     fetch('/getUserEventInfo', {
-      method: 'GET', // or 'PUT'
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userInfo.username),
+      body: JSON.stringify({ username: userInfo.username }),
     })
       .then((response) => response.json())
       .then((data) => setEvent(data));
-  }, []);
+  }, [userInfo]);
+
+  console.log(event);
 
   //   fetch('/api/events')
   //     .then((res) => res.json())
@@ -30,12 +36,12 @@ const EventDisplay = (props) => {
   // }, []);
 
   const convertToDays = (start, end) => {
-    const daysBetween = ((end - start) / (60 * 60 * 24 * 1000)) + 1;
+    const daysBetween = (end - start) / (60 * 60 * 24 * 1000) + 1;
     return daysBetween;
   };
 
-  const startDay = new Date(event.start_date);
-  const endDay = new Date(event.end_date);
+  const startDay = new Date(event.eventInfo?.start_date);
+  const endDay = new Date(event.eventInfo?.end_date);
   const days = convertToDays(startDay, endDay);
 
   /* conditional that displays event if it exists, or form if it does not exist */
@@ -43,10 +49,10 @@ const EventDisplay = (props) => {
     <div>
       <h1>Event:</h1>
       <div className="eventDisplayDiv">
-        {event.name?.length > 0 ? (
+        {event.eventInfo?.name?.length > 0 ? (
           <div>
             Event:
-            {event?.name}
+            {event.eventInfo?.name}
             <br />
             You start on:
             {startDay.toDateString()}
@@ -54,13 +60,8 @@ const EventDisplay = (props) => {
             You end on:
             {endDay.toDateString()}
             <br />
-            You have
-            {' '}
-            {days}
-            {' '}
-            days
+            You have {days} days
             <br />
-
           </div>
         ) : (
           <div>
@@ -69,7 +70,6 @@ const EventDisplay = (props) => {
             <JoinEventForm />
           </div>
         )}
-
       </div>
     </div>
   );

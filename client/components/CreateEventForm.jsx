@@ -1,5 +1,5 @@
-import React, { useRecoilState } from 'react';
-import { useRecoilValue } from 'recoil';
+import React from 'react';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import atoms from '../atoms';
 
 const CreateEventForm = () => {
@@ -31,28 +31,18 @@ const CreateEventForm = () => {
       <h2>Create Event</h2>
       <form>
         Event name:
-        <input
-          type="text"
-          name="eventName"
-          id="eventName"
-          onChange={handleChange}
-        />
+        <input type="text" name="eventName" id="eventName" />
         <br />
-
         Start day:
         <input type="date" id="startDay" />
         <br />
-
         End day:
         <input type="date" id="endDay" />
         <br />
-
         Task Name:
         <input type="text" id="taskName" />
         <br />
-
         <button onClick={handleSubmit}>Submit</button>
-
       </form>
     </div>
   );

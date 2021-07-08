@@ -10,7 +10,7 @@ const Signup = () => {
 
   useEffect(() => {
     console.log(signupSuccess);
-    if (signupSuccess) {
+    if (signupSuccess > 0) {
       history.push('/app');
     }
   });
@@ -27,8 +27,8 @@ const Signup = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setSignup(data.id);
-        setUser({ username: userData, userId: data.id });
+        setSignup(data);
+        setUser({ username: userData, userId: data });
       })
       .catch((err) => console.log('signup err', err));
   };
