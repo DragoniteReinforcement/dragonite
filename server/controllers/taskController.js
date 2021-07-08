@@ -1,6 +1,6 @@
 const taskController = {};
 
-taskController.addTask = (req, res, next) => {
+taskController.createUserEventTasks = (req, res, next) => {
   const { task_name, complete_user_id, event_id } = req.body;
   res.locals.results = { user, pass };
   next();
