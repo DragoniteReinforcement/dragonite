@@ -4,6 +4,7 @@ const path = require('path');
 const userController = require('./controllers/userController.js');
 const eventController = require('./controllers/eventController.js');
 const taskController = require('./controllers/taskController.js');
+const authController = require('./controllers/authController.js');
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 // serve index.html on the route '/'
 app.get('/', (req, res) => res.status(200).sendFile(path.join(__dirname, '../index.html')));
+
+app.post('/authenticate', authController.verifyUser, (req, res) => {
+  // takes username and password and  all the event info associated with that user
+  console.log('Signin initiated');
+  if (res.locals.userId) {
+    res.status(200).json({ id: res.locals.userId });
+    console.log('Successfully logged in');
+  } else res.status(200).send('Unsuccessful login attempt');
+});
 
 // // users
 app.get(
