@@ -1,6 +1,11 @@
 import React from 'react';
+import MainContainer from './containers/MainContainer.jsx';
+import './style.css';
 
 const App = () => (
-  <div>hi</div>
+  <div>
+    <MainContainer />
+  </div>
 );
+
 export default App;

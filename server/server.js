@@ -2,10 +2,11 @@ const express = require('express');
 
 const app = express();
 const path = require('path');
+
 const cookieParser = require('cookie-parser');
+const apiRouter = require('./api');
 
 const PORT = 3000;
-// const userController = require('./controllers/userController.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -16,39 +17,22 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 // serve index.html on the route '/'
 app.get('/', (req, res) => res.status(200).sendFile(path.join(__dirname, '../index.html')));
 
-// // users
-// app.post('/newUser', userController.newUser, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+app.use('/api', apiRouter);
 
-// app.delete('/deleteUser', userController.deleteUser, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+// route error handler is unknown
+app.use((req, res) => res.status(404).send("This is not the page you're looking for..."));
 
-// // events
-// app.post('/newEvent', eventController.addEvent, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
-
-// app.get('/getEvent', eventController.getEvents, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
-
-// app.delete('/deleteEvent', eventController.deleteEvent, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
-
-// // tasks
-// app.post('/newTask', taskController.addTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
-
-// app.get('/getTask', taskController.getTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
-
-// app.delete('/deleteTask', taskController.deleteTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+// global error handler
+app.use((err, req, res, next) => {
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 400,
+    message: { err: 'An error occurred' },
+  };
+  const errorObj = Object.assign(defaultErr, err);
+  console.log(errorObj.log);
+  res.status(errorObj.status).send(JSON.stringify(errorObj.message));
+  next();
+});
 
 app.listen(PORT, () => console.log(`Listening at ${PORT}`));
