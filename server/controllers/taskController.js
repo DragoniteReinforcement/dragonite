@@ -1,6 +1,7 @@
-// return an array of tasks to the frontend with name, taskId, task day, eventId, completed
-// add endpoint for when a task is completed
-// add endpoint for user's points and array of users in event with points [{name, points}, {name, points}]
+// [x]need auth endpoint with username & userId
+// [x]return an array of tasks to the frontend with name, taskId, task day, eventId, completed
+// []add endpoint for when a task is completed
+// []add endpoint for user's points and array of users in event with points [{name, points}, {name, points}]
 
 const format = require('pg-format');
 const db = require('../models/appModel.js');
@@ -82,15 +83,62 @@ taskController.addUserToTasks = (req, res, next) => {
 };
 
 taskController.getUserTasks = (req, res, next) => {
-  // need to get tasks for user's event and return task name, day
+  // need to get tasks for user's event and return task name, day, event_id
 
-  const query1 = 'SELECT id FROM tasks WHERE event_id = $1';
-  const parameters = [req.body.eventId];
+  const query1 =
+    'SELECT * FROM users_tasks INNER JOIN tasks ON users_tasks.tasks_id = tasks.id AND users_tasks.users_id = $1';
+  const parameters = [res.locals.userId];
 
   db.query(query1, parameters)
     .then((data) => {
-      res.locals.taskIds = data.rows;
-      console.log('returned task ids', res.locals.taskIds);
+      res.locals.tasks = data.rows;
+      console.log('returned task ids', res.locals.tasks);
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+taskController.completeTask = (req, res, next) => {
+  const { tasksId } = req.body;
+  const { userId } = res.locals;
+  // const { tasks_id, users_id } = res.locals;
+
+  // console.log(req.body);
+
+  const params = [tasksId, userId];
+
+  const completeTaskQuery =
+    'UPDATE users_tasks SET completed = true WHERE tasks_id = $1 AND users_id = $2';
+
+  db.query(completeTaskQuery, params)
+    .then((data) => {
+      console.log('successfully updated task', data);
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+taskController.incompleteTask = (req, res, next) => {
+  const { tasksId } = req.body;
+  const { userId } = res.locals;
+  // const { tasks_id, users_id } = res.locals;
+
+  // console.log(req.body);
+
+  const params = [tasksId, userId];
+
+  const completeTaskQuery =
+    'UPDATE users_tasks SET completed = false WHERE tasks_id = $1 AND users_id = $2';
+
+  db.query(completeTaskQuery, params)
+    .then((data) => {
+      console.log(`User ${userId} market task ${tasksId} as incomplete`);
       return next();
     })
     .catch((err) => {
