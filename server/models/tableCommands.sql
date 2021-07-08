@@ -21,7 +21,7 @@ CREATE TABLE "tasks" (
 );
 
 CREATE TABLE "users_events" (
-  PRIMARY KEY(users_id, event_id),
+  PRIMARY KEY(users_id, events_id),
   "users_id" int REFERENCES users("id"),
   "events_id" int REFERENCES events("id")
 );

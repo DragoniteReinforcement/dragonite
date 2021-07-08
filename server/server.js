@@ -35,9 +35,19 @@ app.get(
   userController.getEventInfo,
   (req, res) => {
     // takes username and returns all the event info associated with that user
-    res.status(200).json(res.locals.result);
+
+    res.status(200).json({
+      userId: res.locals.userId,
+      eventInfo: res.locals.eventInfo,
+      eventId: res.locals.eventId,
+    });
   },
 );
+
+app.get('/getUserTasks', userController.getUserId, taskController.getUserTasks, (req, res) => {
+  // provide username, returns array of objects with with userid, taskname, taskId, taskday, eventId, completed
+  res.status(200).json(res.locals.tasks);
+});
 
 app.post('/newUser', userController.newUser, (req, res) => {
   // working
@@ -55,7 +65,7 @@ app.post(
   (req, res) => {
     // working
     // requires username, eventId in req.body
-    res.status(200).json(res.locals.result);
+    res.status(200).json(res.locals.userTaskIds);
   },
 );
 
@@ -70,7 +80,7 @@ app.post('/newEvent', eventController.newEvent, taskController.createDailyEventT
   // working
   // requires name, rules, prize, start_date, end_date
   // also requires taskName
-  res.status(200).json(res.locals.result);
+  res.status(200).json({ eventId: res.locals.eventId });
 });
 
 // app.get('/getEvent', eventController.getEvents, (req, res) => {
@@ -83,17 +93,19 @@ app.delete('/deleteEvent', eventController.deleteEvent, (req, res) => {
   res.status(200).json(res.locals.result);
 });
 
-// // tasks
-// app.post('/newTask', taskController.addTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+// route when a user marks a task complete (takes userName and taskID)
+app.post('/completeTask', userController.getUserId, taskController.completeTask, (req, res) => {
+  // find
+  res.status(200).json();
+});
 
-// app.get('/getTask', taskController.getTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+app.post('/incompleteTask', userController.getUserId, taskController.incompleteTask, (req, res) => {
+  // find
+  res.status(200).json();
+});
 
-// app.delete('/deleteTask', taskController.deleteTask, (req, res) => {
-//   res.status(200).json(res.locals.result);
-// });
+app.get('/getLeaderboard', (req, res) => {
+  res.status(200).json();
+});
 
 app.listen(PORT, () => console.log(`Listening at ${PORT}`));

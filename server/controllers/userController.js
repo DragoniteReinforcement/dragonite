@@ -95,7 +95,7 @@ userController.joinEvent = (req, res, next) => {
   console.log('userId', userId);
   const { eventId } = req.body;
   const values = [userId, eventId];
-  const query = 'INSERT INTO users_events ( user_id, event_id) VALUES($1, $2);';
+  const query = 'INSERT INTO users_events ( users_id, events_id) VALUES($1, $2);';
 
   db.query(query, values)
     .then((data) => {
