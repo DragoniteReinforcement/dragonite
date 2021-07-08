@@ -55,13 +55,13 @@ userController.getEventId = (req, res, next) => {
   console.log('getEventId', req.body);
   // const { userId } = res.locals.results;
   const userIdValues = [res.locals.userId];
-  const eventIdQuery = 'SELECT event_id FROM users_events WHERE user_id = $1';
+  const eventIdQuery = 'SELECT events_id FROM users_events WHERE users_id = $1';
 
   db.query(eventIdQuery, userIdValues)
     .then((data) => {
       // console.log('data: ', data);
-      res.locals.eventId = data.rows[0].event_id;
-      // console.log('res.locals.eventId: ', res.locals.eventId);
+      res.locals.eventId = data.rows[0].events_id;
+      console.log('res.locals.eventId: ', res.locals.eventId);
       return next();
     })
     .catch((err) => {
@@ -79,9 +79,9 @@ userController.getEventInfo = (req, res, next) => {
 
   db.query(eventInfoQuery, eventIdValues)
     .then((data) => {
-      // console.log('data: ', data);
+      console.log('data: ', data);
       res.locals.eventInfo = data.rows[0];
-      // console.log('res.locals.eventInfo: ', res.locals.eventInfo);
+      console.log('res.locals.eventInfo: ', res.locals.eventInfo);
       return next();
     })
     .catch((err) => {

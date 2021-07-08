@@ -23,6 +23,29 @@ eventController.newEvent = (req, res, next) => {
     });
 };
 
+eventController.getLeaderboard = (req, res, next) => {
+  console.log('entered the eventController.getLeaderboard');
+
+  // all completed events from all users; returns an array of objects with the columns as properties
+  const query1 = 'select * from users_tasks where completed = true';
+  db.query(query1)
+    .then((data) => {
+      console.log(data.rows);
+      res.locals.points = data.rows[0].id;
+      res.locals.startDate = data.rows[0].start_date;
+      res.locals.endDate = data.rows[0].end_date;
+      console.log('res.locals.startDate', res.locals.startDate);
+      return next();
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+};
+
+// iterate through data (array of objects)
+// for each object, if
+
 // eventController.getEvents = (req, res, next) => {
 //   const { event_name } = req.body;
 //   res.locals.results = {

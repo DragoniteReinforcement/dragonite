@@ -10,7 +10,7 @@ authController.verifyUser = (req, res, next) => {
 
   db.query(query1, parameters)
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.rowCount !== 0) res.locals.userId = data.rows[0].id;
 
       return next();

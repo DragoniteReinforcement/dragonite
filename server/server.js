@@ -27,7 +27,7 @@ app.post('/authenticate', authController.verifyUser, (req, res) => {
 });
 
 // // users
-app.get(
+app.post(
   // Working
   '/getUserEventInfo',
   userController.getUserId,
@@ -44,12 +44,12 @@ app.get(
   },
 );
 
-app.get('/getUserTasks', userController.getUserId, taskController.getUserTasks, (req, res) => {
+app.post('/getUserTasks', userController.getUserId, taskController.getUserTasks, (req, res) => {
   // provide username, returns array of objects with with userid, taskname, taskId, taskday, eventId, completed
   res.status(200).json(res.locals.tasks);
 });
 
-app.post('/newUser', userController.newUser, (req, res) => {
+app.post('/addNewUser', userController.newUser, (req, res) => {
   // working
   // username, password required in req.body
   // console.log(res.locals.userId);
