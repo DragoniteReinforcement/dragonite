@@ -1,0 +1,44 @@
+.mainContainerDiv{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.rightDiv{
+    border: 1px solid black;
+    margin: 30px;
+    padding: 5px;
+}
+
+#userProfile, #progress {
+    border: 1px solid black;
+    margin: 30px;
+    padding: 5px;
+}
+
+.eventDisplayDiv, .dayBox{
+    border: 1px solid black;
+    margin: 30px;
+    padding: 20px;
+}
+
+
+.rulesPriceContainerDiv{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+.rulesDisplayDiv, .prizeDisplayDiv{
+    border: 1px solid black;
+    padding: 30px;
+    margin: 30px;
+}
+
+.daysDisplayDiv{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.dayBox{
+    width: 150px;
+    height: 150px;
+}
