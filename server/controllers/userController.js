@@ -5,10 +5,10 @@ const userController = {};
 userController.newUser = (req, res, next) => {
   const { username, password } = req.body;
   const newUserValues = [username, password];
-  const newUserQuery = 'INSERT INTO users ( username, password) VALUES( $1, $2)';
+  const newUserQuery = 'INSERT INTO users ( username, password) VALUES( $1, $2) RETURNING id';
   db.query(newUserQuery, newUserValues)
     .then((data) => {
-      res.locals.results = data;
+      res.locals.userId = data.rows[0].id;
       return next();
     })
     .catch((err) => {
