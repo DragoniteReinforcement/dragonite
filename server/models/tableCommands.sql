@@ -1,35 +1,34 @@
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "username" varchar,
-  "password" varchar
+  "username" varchar NOT NULL,
+  "password" varchar NOT NULL
 );
 
 CREATE TABLE "events" (
   "id" SERIAL PRIMARY KEY,
-  "name" varchar,
-  "rules" varchar,
-  "prize" varchar,
-  "start_date" date,
-  "end_date" date
+  "name" varchar NOT NULL,
+  "rules" varchar NOT NULL,
+  "prize" varchar NOT NULL,
+  "start_date" date NOT NULL,
+  "end_date" date NOT NULL
 );
 
 CREATE TABLE "tasks" (
   "id" SERIAL PRIMARY KEY,
-  "task_name" varchar,
-  "completed_user_id" BOOLEAN,
+  "task_name" varchar NOT NULL,
+  "task_day" int NOT NULL,
   "event_id" int REFERENCES events("id")
 );
 
 CREATE TABLE "users_events" (
-  PRIMARY KEY(user_id, event_id),
-  "user_id" int REFERENCES users("id"),
-  "event_id" int REFERENCES events("id")
+  PRIMARY KEY(users_id, event_id),
+  "users_id" int REFERENCES users("id"),
+  "events_id" int REFERENCES events("id")
 );
 
 CREATE TABLE "users_tasks" (
   PRIMARY KEY(users_id, tasks_id),
   "users_id" int REFERENCES users("id"),
-  "tasks_id" int REFERENCES tasks("id")
+  "tasks_id" int REFERENCES tasks("id"),
+  "completed" BOOLEAN DEFAULT FALSE
 );
-
-
