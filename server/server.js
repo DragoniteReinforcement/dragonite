@@ -42,7 +42,8 @@ app.get(
 app.post('/newUser', userController.newUser, (req, res) => {
   // working
   // username, password required in req.body
-  res.status(200).json(res.locals.result);
+  // console.log(res.locals.userId);
+  res.status(200).json(res.locals.userId);
 });
 
 app.post(
