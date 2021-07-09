@@ -20,4 +20,12 @@ atoms.userTasks = atom({
   default: [],
 });
 
+atoms.scores = atom({
+  key: 'scores',
+  default: {
+    username: '',
+    score: 0,
+  },
+});
+
 export default atoms;
