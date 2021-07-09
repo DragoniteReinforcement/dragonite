@@ -59,8 +59,10 @@ userController.getEventId = (req, res, next) => {
 
   db.query(eventIdQuery, userIdValues)
     .then((data) => {
-      // console.log('data: ', data);
+      console.log('data: ', data);
+      if (data.rowCount === 0) return next();
       res.locals.eventId = data.rows[0].events_id;
+
       console.log('res.locals.eventId: ', res.locals.eventId);
       return next();
     })
