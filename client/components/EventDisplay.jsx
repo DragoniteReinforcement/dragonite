@@ -11,8 +11,6 @@ const EventDisplay = () => {
   // let body = '';
   // if (userInfo.username !== '') body = JSON.stringify(userInfo.username);
   useEffect(() => {
-    console.log('____________', userInfo.username);
-    console.log('userinfo', userInfo);
     fetch('/getUserEventInfo', {
       method: 'POST',
       headers: {
@@ -22,18 +20,9 @@ const EventDisplay = () => {
     })
       .then((response) => response.json())
       .then((data) => setEvent(data));
-  }, [userInfo]);
+  },[userInfo]);
 
   console.log(event);
-
-  //   fetch('/api/events')
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setEvent(data[0]);
-  //     }).catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
   const convertToDays = (start, end) => {
     const daysBetween = (end - start) / (60 * 60 * 24 * 1000) + 1;
