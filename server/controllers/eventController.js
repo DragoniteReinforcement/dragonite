@@ -27,14 +27,26 @@ eventController.getLeaderboard = (req, res, next) => {
   console.log('entered the eventController.getLeaderboard');
 
   // all completed events from all users; returns an array of objects with the columns as properties
-  const query1 = 'select * from users_tasks where completed = true';
+  const query1 =
+    'SELECT * FROM users_tasks INNER JOIN users ON users.id = users_tasks.users_id AND users_tasks.completed = true';
+  // 'SELECT * FROM users_tasks INNER JOIN tasks ON users_tasks.tasks_id = tasks.id AND users_tasks.users_id = $1';
+
   db.query(query1)
     .then((data) => {
       console.log(data.rows);
-      res.locals.points = data.rows[0].id;
-      res.locals.startDate = data.rows[0].start_date;
-      res.locals.endDate = data.rows[0].end_date;
-      console.log('res.locals.startDate', res.locals.startDate);
+      const leaderboard = data.rows;
+
+      console.log('leaderboard:', leaderboard);
+      const scores = {};
+      for (let i = 0; i < leaderboard.length; i++) {
+        if (!scores.hasOwnProperty(leaderboard[i].username)) {
+          scores[leaderboard[i].username] = 1;
+        } else {
+          scores[leaderboard[i].username]++;
+        }
+      }
+      console.log('scores:', scores);
+      res.locals.scores = scores;
       return next();
     })
     .catch((err) => {
@@ -43,8 +55,14 @@ eventController.getLeaderboard = (req, res, next) => {
     });
 };
 
+// [
+//   { users_id: 1, tasks_id: 1, completed: true},
+//   { users_id: 7, tasks_id: 1, completed: true},
+// ]
+
+// create counter object to hold points
 // iterate through data (array of objects)
-// for each object, if
+// for each object, if there's a property for that user_id already then increment
 
 // eventController.getEvents = (req, res, next) => {
 //   const { event_name } = req.body;

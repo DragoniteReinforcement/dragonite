@@ -104,8 +104,16 @@ app.post('/incompleteTask', userController.getUserId, taskController.incompleteT
   res.status(200).json();
 });
 
-app.get('/getLeaderboard', (req, res) => {
-  res.status(200).json();
-});
+app.post(
+  '/getLeaderboard',
+  // userController.getUserId,
+  // userController.getEventId,
+  eventController.getLeaderboard,
+  (req, res) => {
+    // expects username and returns a list of users and their scores
+
+    res.status(200).json(res.locals.scores);
+  },
+);
 
 app.listen(PORT, () => console.log(`Listening at ${PORT}`));
